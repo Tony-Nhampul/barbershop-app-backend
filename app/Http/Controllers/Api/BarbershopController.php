@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Barbershop;
+use App\Models\Service;
 use Illuminate\Http\Request;
 
 class BarbershopController extends Controller
@@ -37,9 +38,18 @@ class BarbershopController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Barbershop $barbershop)
+    public function show($id)
     {
-        //
+       /* $barbershopDetails = Barbershop::findOrFail($id);
+
+        $services = Service::where('barbershop_id', $id)->get();
+        $barbershopDetails->services = $services;*/
+
+        $barbershopDetails = Barbershop::with('services')->findOrFail($id);
+
+        return response()->json($barbershopDetails);
+
+       
     }
 
     /**

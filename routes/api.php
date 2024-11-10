@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\Api\BarbershopController;
+use App\Http\Controllers\Api\BookingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +18,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['prefix' => 'v1', 'as' => 'api.'], function () {
+    Route::post('/login', [AuthController::class, 'login'])->name('login');
+    Route::get('/barbershops', [BarbershopController::class, 'index'])->name('home');
+    Route::get('/barbershop/{id}', [BarbershopController::class, 'show'])->name('barbershopDetails');
+    
     //Route::group(['middleware' => ['auth:sanctum']], function () {
-        Route::get('/', [BarbershopController::class, 'index'])->name('home');
+        Route::post('/booking', [BookingController::class, 'store'])->name('createBooking');
     //});
 });
