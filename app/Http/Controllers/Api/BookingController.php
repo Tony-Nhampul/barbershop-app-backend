@@ -11,10 +11,29 @@ class BookingController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($id)
     {
         //
+        $bookings = Booking::where('user_id', $id) 
+                            ->with(['user', 'service', 'barbershop']) 
+                            ->orderBy('id', 'desc')
+                            ->get();
+        
+        return response()->json($bookings);
     }
+
+    public function confirmedBookings($id)
+    {
+        //
+        $bookings = Booking::where('user_id', $id) 
+                            ->where('date', '>=', date('Y-m-d'))
+                            ->with(['user', 'service', 'barbershop']) 
+                            ->orderBy('id', 'desc')
+                            ->get();
+        
+        return response()->json($bookings);
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -45,6 +64,21 @@ class BookingController extends Controller
         return response()->json($booking);
     }
 
+    public function getBookingsOfTheDay(Request $request)
+    {
+        //
+        $barbershop_id = $request->barbershop_id;
+        $day = $request->date;
+        $startOfDay = date('Y-m-d 00:00:00', strtotime($day)); 
+        $endOfDay = date('Y-m-d 23:59:59', strtotime($day)); 
+        
+        $bookingOfTheDay = Booking::where('barbershop_id', $barbershop_id)
+                                    ->whereBetween('date', [$startOfDay, $endOfDay])
+                                    ->get();
+        
+        return response()->json($bookingOfTheDay);
+    }
+
     /**
      * Display the specified resource.
      */
@@ -72,8 +106,15 @@ class BookingController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Booking $bookings)
+    public function destroy($booking_id)
     {
         //
+        $booking = Booking::findOrFail($booking_id);
+
+        $booking->delete();
+
+        return response()->json([
+            'message' => 'Reserva cancelada com Sucesso.',
+        ]);
     }
 }

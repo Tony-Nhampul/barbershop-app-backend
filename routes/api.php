@@ -24,5 +24,8 @@ Route::group(['prefix' => 'v1', 'as' => 'api.'], function () {
     
     //Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('/booking', [BookingController::class, 'store'])->name('createBooking');
+        Route::get('/bookings/{id}', [BookingController::class, 'index'])->name('bookings');
+        Route::delete('/bookings/{booking_id}', [BookingController::class, 'destroy'])->name('deleteBookings');
+        Route::post('/bookingsOfTheDay', [BookingController::class, 'getBookingsOfTheDay'])->name('bookingsOfTheDay');
     //});
 });
