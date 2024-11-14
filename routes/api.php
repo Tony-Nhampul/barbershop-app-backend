@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\AuthController;
 
 Route::group(['prefix' => 'v1', 'as' => 'api.'], function () {
     Route::post('/login', [AuthController::class, 'login'])->name('login');
+    Route::post('/signup', [AuthController::class, 'store'])->name('signup');
     Route::get('/barbershops', [BarbershopController::class, 'index'])->name('home');
     Route::get('/barbershop/{id}', [BarbershopController::class, 'show'])->name('barbershopDetails');
     
