@@ -5,16 +5,19 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BookingController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index($id)
+    public function index()
     {
-        //
-        $bookings = Booking::where('user_id', $id) 
+        $user = Auth::user();   //Pegando informações do Usuário autenticado
+        $user_id = $user->id;   //Pegando apenas o Id do Usuário
+        
+        $bookings = Booking::where('user_id', $user_id) 
                             ->with(['user', 'service', 'barbershop']) 
                             ->orderBy('id', 'desc')
                             ->get();
