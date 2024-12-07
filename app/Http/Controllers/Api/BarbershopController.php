@@ -52,6 +52,26 @@ class BarbershopController extends Controller
        
     }
 
+    
+    public function search(Request $request)
+    {
+
+        // Validate the search URL Parameter
+        $request->validate([
+            'search' => 'required|string|max:255',
+        ]);
+
+        // Retrieve the 'search' query parameter
+        $param = $request->query('search');
+
+        // Search the database with partial matching
+        $searchedBarbershops = Barbershop::where('name', 'LIKE', "%$param%")->get();
+
+        // Return the results as JSON
+        return response()->json($searchedBarbershops);
+       
+    }
+
     /**
      * Show the form for editing the specified resource.
      */

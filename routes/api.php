@@ -22,6 +22,7 @@ Route::group(['prefix' => 'v1', 'as' => 'api.'], function () {
     Route::post('/signup', [AuthController::class, 'store'])->name('signup');
     Route::get('/barbershops', [BarbershopController::class, 'index'])->name('home');
     Route::get('/barbershop/{id}', [BarbershopController::class, 'show'])->name('barbershopDetails');
+    Route::get('/searchbarbershops', [BarbershopController::class, 'search'])->name('searchBarbershops');
     
     Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('/booking', [BookingController::class, 'store'])->name('createBooking');
