@@ -50,10 +50,10 @@ class BookingController extends Controller
     {
         //
         $request->validate([
-            'barbershop_id' => 'required',
-            'service_id' => 'required',
-            'user_id' => 'required',
-            'date' => 'required',
+            'barbershop_id' => 'required|exists:barbershops,id', 
+            'service_id' => 'required|exists:services,id',
+            'user_id' => 'required|exists:users,id',
+            'date' => 'required|date',
         ]);
         
         //$booking = $request->all();
